@@ -18,15 +18,17 @@
                 <li><a href="#">Thông Tin</a></li>
                 <li><a href="#">Liên Hệ</a></li>
             </ul>
-            <button class="btn-header-login">Đăng Nhập</button>
-        </header>
+            <button class="btn-header-login" onclick="window.location.href='login.html'">Đăng Nhập</button>
+    </header>
+
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
 
         <main class="main-content">
             <div class="register-card">
                 <h2 class="register-title">Tạo tài khoản mới</h2>
                 <p class="register-subtitle">Đăng ký để đặt vé xem phim ngay hôm nay</p>
                 
-                <form action="#">
+                <form id="registerForm">
                     <div class="form-group">
                         <label for="fullname">Họ và tên</label>
                         <div class="input-wrapper">
@@ -45,7 +47,7 @@
                         <label for="password">Mật khẩu</label>
                         <div class="input-wrapper">
                             <input type="password" id="password" placeholder="******">
-                            <span class="icon">
+                            <span class="icon toggle-password" data-target="password">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"/></svg>
                             </span>
                         </div>
@@ -55,7 +57,7 @@
                         <label for="confirm-password">Xác nhận mật khẩu</label>
                         <div class="input-wrapper">
                             <input type="password" id="confirm-password" placeholder="******">
-                            <span class="icon">
+                            <span class="icon toggle-password" data-target="confirm-password">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22"/></svg>
                             </span>
                         </div>
@@ -63,7 +65,7 @@
 
                     <div class="form-options terms">
                         <label class="checkbox-container">
-                            <input type="checkbox"> 
+                            <input type="checkbox" id="terms"> 
                             <span>Tôi đồng ý với <a href="#" class="highlight-red">điều khoản sử dụng</a> và chính sách bảo mật của CineEdu.</span>
                         </label>
                     </div>
@@ -74,7 +76,7 @@
                 </form>
 
                 <div class="login-text">
-                    Đã có tài khoản? <a href="#">Đăng nhập ngay</a>
+                    Đã có tài khoản? <a href="login.html" class="login-link">Đăng nhập ngay</a>
                 </div>
             </div>
         </main>
@@ -83,5 +85,6 @@
             <p>© 2026 RikkeiEdu. Tất cả quyền được bảo mật.</p>
         </footer>
     </div>
+    <script src="../js/register.js"></script>
 </body>
 </html>
