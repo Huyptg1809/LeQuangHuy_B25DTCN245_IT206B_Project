@@ -387,13 +387,16 @@ body {
 	border-radius: 8px;
 	padding: 24px;
 	min-height: 250px;
-	display: block;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
 	text-align: left;
 }
 
 .reason-grid .info-card img {
-    width: 24;
-    height: 27;
+    width: 24px;
+    height: 27px;
     opacity: 1;
 	margin-bottom: 16px;
 }

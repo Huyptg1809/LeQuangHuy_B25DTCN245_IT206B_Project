@@ -83,22 +83,6 @@ body {
 	padding: 24px;
 }
 
-.btn-logout {
-	border: none;
-	border-radius: 10px;
-	background: var(--danger);
-	color: #ffffff;
-	font-size: 18px;
-	font-weight: 700;
-	padding: 14px 28px;
-	cursor: pointer;
-	transition: background 0.2s ease;
-}
-
-.btn-logout:hover {
-	background: var(--danger-hover);
-}
-
 .modal-overlay {
 	position: fixed;
 	inset: 0;
