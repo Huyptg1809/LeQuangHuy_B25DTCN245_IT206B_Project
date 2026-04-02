@@ -1,0 +1,159 @@
+:root {
+	--bg: #111827;
+	--card: #1f2937;
+	--text: #f3f4f6;
+	--muted: #9ca3af;
+	--danger: #ef4444;
+	--danger-hover: #dc2626;
+	--line: #374151;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+	min-height: 100vh;
+	background: radial-gradient(circle at top, #1f2937 0%, #111827 55%);
+	color: var(--text);
+	display: flex;
+	flex-direction: column;
+}
+
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background: #181111;
+	border-bottom: 1px solid #333;
+	height: 70px;
+	padding: 16px 40px;
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	color: #ef4444;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.logo_white {
+	color: #ffffff;
+}
+
+.nav-links {
+	display: flex;
+	list-style: none;
+	gap: 30px;
+	margin-left: auto;
+	margin-right: 32px;
+}
+
+.nav-links a {
+	color: #f3f4f6;
+	text-decoration: none;
+	font-size: 14px;
+	transition: color 0.3s;
+}
+
+.nav-links a:hover {
+	color: #ef4444;
+}
+
+.btn-header-logout {
+	background-color: #ef4444;
+	color: #ffffff;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	font-weight: bold;
+	padding: 10px 24px;
+}
+
+.admin-page {
+	min-height: calc(100vh - 70px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 24px;
+}
+
+.btn-logout {
+	border: none;
+	border-radius: 10px;
+	background: var(--danger);
+	color: #ffffff;
+	font-size: 18px;
+	font-weight: 700;
+	padding: 14px 28px;
+	cursor: pointer;
+	transition: background 0.2s ease;
+}
+
+.btn-logout:hover {
+	background: var(--danger-hover);
+}
+
+.modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.55);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+}
+
+.modal-card {
+	width: 100%;
+	max-width: 420px;
+	background: var(--card);
+	border: 1px solid var(--line);
+	border-radius: 12px;
+	padding: 22px;
+}
+
+.modal-card h2 {
+	font-size: 22px;
+	margin-bottom: 8px;
+}
+
+.modal-card p {
+	color: var(--muted);
+	margin-bottom: 18px;
+}
+
+.modal-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+}
+
+.btn-secondary,
+.btn-primary {
+	border: none;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 600;
+	padding: 10px 14px;
+	cursor: pointer;
+}
+
+.btn-secondary {
+	background: #374151;
+	color: #ffffff;
+}
+
+.btn-primary {
+	background: var(--danger);
+	color: #ffffff;
+}
+
+.hidden {
+	display: none;
+}

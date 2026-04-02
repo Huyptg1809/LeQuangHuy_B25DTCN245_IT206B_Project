@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang Quản Trị Admin</title>
+    <link rel="stylesheet" href="../css/admin.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="navbar">
+      <div class="logo">
+        <img
+          src="../assets/images/IconLogin.png"
+          alt="Rikkei Cinema Logo"
+          class="logo-image"
+        />
+        <span class="logo_white">Rikkei</span>Cinema
+      </div>
+      <ul class="nav-links">
+        <li><a href="index.html">Trang Chủ</a></li>
+        <li><a href="#">Thông Tin</a></li>
+        <li><a href="#">Liên Hệ</a></li>
+      </ul>
+      <button id="logoutBtn" class="btn-header-logout" type="button">
+        Đăng xuất
+      </button>
+    </header>
+
+    <main class="admin-page">
+      <button class="btn-logout" id="logoutBtnMain" type="button">
+        Đăng xuất
+      </button>
+    </main>
+
+    <div
+      id="logoutModal"
+      class="modal-overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="logoutTitle"
+    >
+      <div class="modal-card">
+        <h2 id="logoutTitle">Xác nhận đăng xuất</h2>
+        <p>Bạn có chắc chắn muốn đăng xuất không?</p>
+        <div class="modal-actions">
+          <button id="cancelLogoutBtn" class="btn-secondary" type="button">
+            Hủy
+          </button>
+          <button id="confirmLogoutBtn" class="btn-primary" type="button">
+            Đăng xuất
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="../js/admin.js"></script>
+  </body>
+</html>
