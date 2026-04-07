@@ -1,22 +1,74 @@
-function showToast(message, type) {
+function showToast(message, type = 'success', customTitle = null) {
     let container = document.getElementById('toastContainer');
     if (!container) {
         container = document.createElement('div');
         container.id = 'toastContainer';
-        container.className = 'toast-container';
         document.body.appendChild(container);
+    }
+    
+    if (!document.getElementById('admin-toast-style')) {
+        const style = document.createElement('style');
+        style.id = 'admin-toast-style';
+        style.innerHTML = `
+            #toastContainer { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 15px; }
+            .v-toast { width: 380px; min-height: 70px; background: #262B33; border-radius: 8px; display: flex; align-items: flex-start; padding: 16px; position: relative; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); color: #fff; font-family: sans-serif; animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+            .v-toast.hide { animation: fadeOutRight 0.3s ease forwards; }
+            .v-toast::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; }
+            .v-toast.success::before, .v-toast.update::before { background: #00d26a; }
+            .v-toast.cancel::before, .v-toast.delete::before, .v-toast.error::before { background: #f8312f; }
+            .v-toast-icon { width: 24px; height: 24px; flex-shrink: 0; margin-right: 14px; margin-top: 2px; }
+            .v-toast-content { flex: 1; display: flex; flex-direction: column; gap: 6px; padding-right: 10px; padding-top: 1px; }
+            .v-toast-title { font-weight: 600; font-size: 16px; color: #fff; }
+            .v-toast-message { font-size: 14px; color: #cbd5e1; line-height: 1.5; }
+            .v-toast-close { background: none; border: none; padding: 0; cursor: pointer; color: #64748b; font-size: 20px; line-height: 1; display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; transition: color 0.2s; }
+            .v-toast-close:hover { color: #fff; }
+            @keyframes slideInRight { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+            @keyframes fadeOutRight { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+        `;
+        document.head.appendChild(style);
     }
 
     const toast = document.createElement('div');
-    toast.className = `toast-item ${type === 'error' ? 'error' : ''}`;
-    const iconSrc = type === 'success' ? '../assets/icons/success.png' : '../assets/icons/cancel.png';
-    toast.innerHTML = `<img src="${iconSrc}" class="toast-icon" alt="icon" /><span>${message}</span>`;
+    toast.className = `v-toast ${type}`;
+
+    let title = customTitle;
+    let iconImg = '';
     
+    if (type === 'success') {
+        title = title || 'Thành công';
+        iconImg = `<img class="v-toast-icon" src="../assets/icons/success.png" alt="success-icon" />`;
+    } else if (type === 'update') {
+        title = title || 'Đã cập nhật';
+        iconImg = `<img class="v-toast-icon" src="../assets/icons/update.png" alt="update-icon" />`;
+    } else if (type === 'cancel') {
+        title = title || 'Đã hủy';
+        iconImg = `<img class="v-toast-icon" src="../assets/icons/cancel.png" alt="cancel-icon" />`;
+    } else if (type === 'delete') {
+        title = title || 'Đã xóa';
+        iconImg = `<img class="v-toast-icon" src="../assets/icons/delete.png" alt="delete-icon" />`;
+    } else {
+        title = title || 'Thông báo';
+        iconImg = `<img class="v-toast-icon" src="../assets/icons/cancel.png" alt="error-icon" />`;
+    }
+
+    toast.innerHTML = `
+        ${iconImg}
+        <div class="v-toast-content">
+            <div class="v-toast-title">${title}</div>
+            <div class="v-toast-message">${message}</div>
+        </div>
+        <button class="v-toast-close">&times;</button>
+    `;
+
     container.appendChild(toast);
-    setTimeout(() => {
+
+    const closeToast = () => {
         toast.classList.add('hide');
-        setTimeout(() => toast.remove(), 220);
-    }, 3000);
+        setTimeout(() => toast.remove(), 300);
+    };
+
+    toast.querySelector('.v-toast-close').addEventListener('click', closeToast);
+    setTimeout(closeToast, 4000);
 }
 
 window.moviesState = [];
@@ -98,13 +150,13 @@ function setupEvents() {
     if (closeAddBtn) closeAddBtn.addEventListener('click', closeAddModal);
     
     const cancelAddBtn = document.getElementById('cancelAddMovieBtn');
-    if (cancelAddBtn) cancelAddBtn.addEventListener('click', closeAddModal);
+    if (cancelAddBtn) cancelAddBtn.addEventListener('click', () => { closeAddModal(); showToast('Đã hủy thao tác.', 'cancel'); });
     
     const formAdd = document.getElementById('addMovieForm');
     if (formAdd) formAdd.addEventListener('submit', saveMovie);
 
     const cancelDelBtn = document.getElementById('cancelDeleteMovieBtn');
-    if (cancelDelBtn) cancelDelBtn.addEventListener('click', closeDeleteModal);
+    if (cancelDelBtn) cancelDelBtn.addEventListener('click', () => { closeDeleteModal(); showToast('Đã hủy thao tác.', 'cancel'); });
     
     const confirmDelBtn = document.getElementById('confirmDeleteMovieBtn');
     if (confirmDelBtn) confirmDelBtn.addEventListener('click', confirmDeleteMovie);
@@ -271,7 +323,7 @@ function saveMovie(e) {
     closeAddModal();
     resetFilters();
     updateTableView();
-    showToast(isEdit ? 'Cập nhật phim thành công!' : 'Thêm phim mới thành công!', 'success');
+    showToast(isEdit ? 'Cập nhật thông tin thành công!' : 'Thêm phim thành công!', isEdit ? 'update' : 'success');
 }
 
 let movieToDeleteId = null;
@@ -295,7 +347,7 @@ function confirmDeleteMovie() {
         closeDeleteModal();
         resetFilters();
         updateTableView();
-        showToast('Đã xóa phim thành công!', 'success');
+        showToast('Đã xóa phim thành công!', 'delete');
     }
 }
 

@@ -118,113 +118,106 @@ const DEFAULT_MOVIES = [
     },
 ];
 
-function initMovies() {
-    if (!localStorage.getItem('movies')) {
+function loadMovies() {
+    let storedMovies = localStorage.getItem('movies');
+
+    if (!storedMovies) {
         localStorage.setItem('movies', JSON.stringify(DEFAULT_MOVIES));
-    }
-    const movies = JSON.parse(localStorage.getItem('movies')) || [];
-    const showingMovies = movies.filter(m => m.status === 1);
-
-    if (showingMovies.length > 0) {
-        let currentSlideIndex = 0;
-        const heroSection = document.querySelector('.hero');
-        const bgContainer = document.querySelector('.background-container');
-        
-        function renderHeroSlide(index) {
-            const heroMovie = showingMovies[index];
-            
-            if (bgContainer) {
-                // Tạo hiệu ứng cross-fade mượt hơn bằng cách điều chỉnh opacity nhanh
-                bgContainer.style.opacity = '0.7';
-                setTimeout(() => {
-                    bgContainer.style.backgroundImage = `linear-gradient(to right, #000000 0%, rgba(38, 38, 38, 0) 50%), url('${heroMovie.posterUrl}')`;
-                    bgContainer.style.backgroundSize = 'cover';
-                    bgContainer.style.backgroundPosition = 'center';
-                    bgContainer.style.backgroundRepeat = 'no-repeat';
-                    bgContainer.style.transition = 'opacity 0.6s ease-in-out';
-                    
-                    // Khôi phục opacity với khoảng trễ ngắn
-                    setTimeout(() => {
-                        bgContainer.style.opacity = '1';
-                    }, 50);
-                }, 300);
-            }
-
-            if (heroSection) {
-                heroSection.style.position = 'relative';
-                
-                heroSection.innerHTML = `
-                    <div style="animation: fade-in-slide 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; max-width: 600px;">
-                            <p class="badge">● Đang Thịnh Hành</p>
-                        </div>
-                        <h1>${heroMovie.title.split(':').join('<br />')}</h1>
-                        <p class="summary">${heroMovie.description}</p>
-                        <div class="actions">
-                          <button class="btn btn-primary">
-                            <img src="../assets/icons/7.png" alt="Đặt vé" /> Đặt Vé Ngay
-                          </button>
-                          <button class="btn btn-dark" onclick="const tr='${heroMovie.trailler || ''}'; if(tr && tr!=='undefined'){ document.getElementById('trailerModal').style.display='flex'; document.getElementById('trailerIframe').src=tr; } else { if(typeof showToast === 'function') { showToast('Trailer không khả dụng!', 'error'); } else { alert('Trailer không khả dụng!'); } }">
-                            <img src="../assets/icons/8.png" alt="Xem trailer" /> Xem Trailer
-                          </button>
-                        </div>
-                    </div>
-                `;
-                
-                // Thêm CSS ngắn gọn cho animation (Mượt mà hơn)
-                if (!document.getElementById('heroSlideAnim')) {
-                    const style = document.createElement('style');
-                    style.id = 'heroSlideAnim';
-                    style.innerHTML = `@keyframes fade-in-slide { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }`;
-                    document.head.appendChild(style);
-                }
-            }
-        }
-
-        window.goToHeroSlide = function(idx) {
-            currentSlideIndex = idx;
-            renderHeroSlide(currentSlideIndex);
-            
-            // Xóa bộ đếm thời gian cũ nếu user bấm tay để không bị nhảy liền 2 lần
-            clearInterval(window.heroSliderInterval);
-            window.heroSliderInterval = setInterval(nextSlide, 5000);
-        };
-
-        function nextSlide() {
-            const maxSlides = Math.min(showingMovies.length, 4);
-            currentSlideIndex = (currentSlideIndex + 1) % maxSlides;
-            renderHeroSlide(currentSlideIndex);
-        }
-
-        // Lần đầu tiên vẽ luôn slide 0
-        renderHeroSlide(0);
-
-        // Kích hoạt auto chuyển cảnh sau mỗi 5 giây nếu có > 1 phim hot
-        if (showingMovies.length > 1) {
-            window.heroSliderInterval = setInterval(nextSlide, 5000);
-        }
+        storedMovies = JSON.stringify(DEFAULT_MOVIES);
     }
     
-    const movieGrid = document.querySelector('.movie-grid');
-    if (movieGrid) {
-        movieGrid.innerHTML = '';
-        const displayMovies = showingMovies.slice(0, 4);
+
+    return JSON.parse(storedMovies);
+}
+
+let currentSlideIndex = 0; 
+
+function renderHeroSlider(movies) {
+    if (movies.length === 0) return; 
+
+    const heroSection = document.querySelector('.hero');
+    const bgContainer = document.querySelector('.background-container');
+    if (!heroSection || !bgContainer) return;
+
+    if (!document.getElementById('heroSlideAnim')) {
+        const style = document.createElement('style');
+        style.id = 'heroSlideAnim';
+        style.innerHTML = `@keyframes fade-in-slide { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }`;
+        document.head.appendChild(style);
+    }
+    function showSlide(index) {
+        const movie = movies[index];
         
-        displayMovies.forEach(m => {
-            movieGrid.innerHTML += `
-                <article class="movie-card">
-                  <img src="${m.posterUrl}" alt="${m.title} poster" onerror="this.src='../assets/images/Film1.png'" />
-                  <div class="movie-info">
-                    <h3>${m.title}</h3>
-                    <p>◷ ${m.duration} phút ・ ${m.genres}</p>
-                    <button>Mua Vé</button>
-                  </div>
-                </article>
-            `;
-        });
+        bgContainer.style.backgroundImage = `linear-gradient(to right, #000000 0%, rgba(38, 38, 38, 0) 50%), url('${movie.posterUrl}')`;
+        bgContainer.style.backgroundSize = 'cover';
+        bgContainer.style.backgroundPosition = 'center';
+
+        heroSection.innerHTML = `
+            <div style="animation: fade-in-slide 0.8s forwards;">
+                <p class="badge" style="color: #ff4757; font-weight: bold; margin-bottom: 10px;">● Đang Thịnh Hành</p>
+                <h1>${movie.title}</h1>
+                <p class="summary">${movie.description}</p>
+                <div class="actions">
+                    <button class="btn btn-primary">Đặt Vé Ngay</button>
+                    <!-- Gọi hàm openTrailer bằng window -->
+                    <button class="btn btn-dark" onclick="window.openTrailer('${movie.trailler}')">Xem Trailer</button>
+                </div>
+            </div>
+        `;
+    }
+
+
+    function nextSlide() {
+        const maxSlides = Math.min(movies.length, 4); 
+        currentSlideIndex++; 
+        if (currentSlideIndex >= maxSlides) {
+            currentSlideIndex = 0; 
+        }
+        showSlide(currentSlideIndex);
+    }
+
+    showSlide(0);
+
+    if (movies.length > 1) {
+        setInterval(nextSlide, 5000);
     }
 }
 
+window.openTrailer = function(link) {
+    if (link && link !== 'undefined') {
+        document.getElementById('trailerModal').style.display = 'flex';
+        document.getElementById('trailerIframe').src = link;
+    } else {
+        alert('Trailer không khả dụng!');
+    }
+};
+
+function renderMovieGrid(movies) {
+    const movieGrid = document.querySelector('.movie-grid');
+    if (!movieGrid) return;
+
+    movieGrid.innerHTML = ''; 
+
+    const displayMovies = movies.slice(0, 4);
+
+    displayMovies.forEach(movie => {
+        movieGrid.innerHTML += `
+            <article class="movie-card">
+              <!-- Nếu ảnh vỡ thì load ảnh mặc định (onerror) -->
+              <img src="${movie.posterUrl}" onerror="this.src='../assets/images/Film1.png'" alt="Poster">
+              <div class="movie-info">
+                <h3>${movie.title}</h3>
+                <p>◷ ${movie.duration} phút ・ ${movie.genres}</p>
+                <button>Mua Vé</button>
+              </div>
+            </article>
+        `;
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    initMovies();
+    const allMovies = loadMovies();
+    const showingMovies = allMovies.filter(phim => phim.status === 1);
+    renderHeroSlider(showingMovies);
+    renderMovieGrid(showingMovies);
 });
