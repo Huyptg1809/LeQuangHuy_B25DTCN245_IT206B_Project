@@ -80,16 +80,16 @@ body {
 	padding: 10px 24px;
 }
 .background-container {
-    background-image: url("../assets/images/Background.png");
     background-size: cover;
     background-position: center top;
-    height: 600px;
+    height: 850px;
     width: 100%;
 }
 .hero {
-    height: 380px;
+    height: auto;
+    min-height: 500px;
     width: 672px;
-	padding: 152px 32px 64px;
+	padding: 250px 32px 64px 40px;
 	background-size: cover;
 	background-position: center;
 	position: relative;

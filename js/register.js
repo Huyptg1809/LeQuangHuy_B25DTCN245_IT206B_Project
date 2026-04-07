@@ -149,6 +149,12 @@ function validateForm(fullname, email, password, confirmPassword, terms) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+        const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+        if (currentUser) {
+                window.location.href = "index.html";
+                return;
+        }
+
     const registerForm = document.getElementById('registerForm');
     const togglePasswordIcons = document.querySelectorAll('.toggle-password');
 

@@ -8,7 +8,7 @@ const STORAGE_KEYS = {
 const DEFAULT_USERS = [
 	{
 		id: 1,
-		fullName: 'Admin Chính',
+		fullName: 'Huy Admin',
 		email: 'huy.ptg.media@gmail.com',
 		password: 'admin123',
 		role: 'admin',
@@ -184,6 +184,12 @@ function findUserByEmail(email, users) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+        const currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.CURRENT_USER) || "null");
+        if (currentUser) {
+                window.location.href = "index.html";
+                return;
+        }
+
 	seedDefaultDataIfNeeded();
 
 	const loginForm = document.getElementById('loginForm');

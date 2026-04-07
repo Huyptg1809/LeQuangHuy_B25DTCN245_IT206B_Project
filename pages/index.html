@@ -177,9 +177,9 @@
           <h2>Đăng ký thành viên CineEdu</h2>
           <p>Nhận ưu đãi vé xem phim và bắp nước hàng tuần.</p>
         </div>
-        <form class="subscribe-form" action="#">
-          <input type="email" placeholder="Email của bạn" />
-          <button type="submit">Đăng ký</button>
+        <form class="subscribe-form" id="subscribeForm" action="#">
+          <input type="email" id="subscribeEmail" placeholder="Email của bạn" required />
+          <button type="submit" id="subscribeBtn">Đăng ký</button>
         </form>
       </section>
 
@@ -203,5 +203,23 @@
         <p class="footer-copy">© 2026 RikkeiEdu. Tất cả quyền được bảo mật .</p>
       </footer>
     </div>
+    <div id="trailerModal" style="display: none; position: fixed; z-index: 99999; left: 0; top: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); align-items: center; justify-content: center;">
+      <div style="position: relative; width: 90%; max-width: 1000px; aspect-ratio: 16 / 9; background: #000; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+        <span onclick="document.getElementById('trailerModal').style.display='none'; document.getElementById('trailerIframe').src=''" style="position: absolute; right: -5px; top: -40px; color: white; font-size: 36px; cursor: pointer; text-shadow: 0 0 5px #000; line-height: 1;">&times;</span>
+        <iframe id="trailerIframe" style="width: 100%; height: 100%; border-radius: 8px;" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+      </div>
+    </div>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+      (function(){
+         emailjs.init({
+           publicKey: "K5V3NrbHmm_36Ydx3", 
+         });
+      })();
+    </script>
+    
+    <script src="../js/movies.js"></script>
+    <script src="../js/index.js"></script>
   </body>
 </html>
