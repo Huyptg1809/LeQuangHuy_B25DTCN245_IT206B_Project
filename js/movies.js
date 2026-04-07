@@ -158,7 +158,7 @@ function renderHeroSlider(movies) {
                 <h1>${movie.title}</h1>
                 <p class="summary">${movie.description}</p>
                 <div class="actions">
-                    <button class="btn btn-primary">Đặt Vé Ngay</button>
+                    <button class="btn btn-primary" onclick="window.handleBooking()">Đặt Vé Ngay</button>
                     <!-- Gọi hàm openTrailer bằng window -->
                     <button class="btn btn-dark" onclick="window.openTrailer('${movie.trailler}')">Xem Trailer</button>
                 </div>
@@ -192,6 +192,12 @@ window.openTrailer = function(link) {
     }
 };
 
+// Hàm xử lý khi bấm Mua vé / Đặt vé
+window.handleBooking = function() {
+    // Chuyển thẳng sang trang Login theo yêu cầu
+    window.location.href = 'login.html';
+};
+
 function renderMovieGrid(movies) {
     const movieGrid = document.querySelector('.movie-grid');
     if (!movieGrid) return;
@@ -208,7 +214,7 @@ function renderMovieGrid(movies) {
               <div class="movie-info">
                 <h3>${movie.title}</h3>
                 <p>◷ ${movie.duration} phút ・ ${movie.genres}</p>
-                <button>Mua Vé</button>
+                <button onclick="window.handleBooking()">Mua Vé</button>
               </div>
             </article>
         `;
